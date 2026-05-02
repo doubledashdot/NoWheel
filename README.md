@@ -35,6 +35,10 @@ allow_umount=true
 
 Which will allow Treat Wheel to enumerate the amount of ReVanced modules -- hence amount of mounts it should find -- and umount them.
 
+## Forks
+
+While we have nothing against forks -- quite the opposite -- we ask you to, instead, make it to contribute to the main repository. This way, everyone can benefit from your contribution and you won't have to maintain your own fork.
+
 ## Contribution
 
 It is mandatory to follow the PerformanC's [contribution guidelines](https://github.com/PerformanC/contributing) to contribute to Treat Wheel. Following its Security Policy, Code of Conduct and syntax standard.
