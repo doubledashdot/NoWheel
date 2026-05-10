@@ -144,6 +144,7 @@ export async function load() {
 
   const rootCss = document.querySelector(':root')
   const tw_state = document.getElementById('tw_state')
+  const tw_icon_state = document.getElementById('tw_icon_state')
 
   const status = await exec('cat /data/adb/treat_wheel/status')
 
@@ -163,7 +164,7 @@ export async function load() {
     tw_state.innerHTML = strings.workingModes.incompatibleModules.replace('%s', globalThis.incompatibleModules.join(', '))
 
     rootCss.style.setProperty('--bright', '#ff0000')
-    document.getElementById('tw_icon_state').innerHTML = '<img class="brightc" src="assets/mark.svg">'
+    tw_icon_state.innerHTML = '<img class="brightc" src="assets/mark.svg">'
   } else if (await _isModuleDisabled()) {
     tw_state.innerHTML = strings.workingModes.disabled
 
