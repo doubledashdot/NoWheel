@@ -21,7 +21,6 @@ CFLAGS = -llog -fvisibility=hidden -fvisibility-inlines-hidden -Wpedantic     \
          -Wno-gnu-zero-variadic-macro-arguments                               \
 		 -Wno-gnu-statement-expression-from-macro-expansion
 
-
 ifeq ($(TERMUX_VERSION),)
 	ADB_PUSH := adb push
 	ADB_SHELL := adb shell 
