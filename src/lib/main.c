@@ -46,7 +46,7 @@ struct module_state g_state = { 0 };
 
 int my_munmap(void *addr, size_t length) {
   if (addr == rz_base) {
-    LOGD("munmap: dladdr failed, found ReZygisk's library");
+    LOGD("munmap: dladdr failed, found NoZygisk's library");
 
     /* INFO: Hiding code START - must run BEFORE unmapping libzygisk.so */
     if (g_state.is_ignoring) {
@@ -235,7 +235,7 @@ void postServerSpecialize(void *mod_data, const struct ServerSpecializeArgs *arg
 
 __attribute__((constructor)) static void no_initialization(void) {
   if (!str_starts_with(getprogname(), "zygote")) {
-    LOGI("Process is not zygote, it's ReZygiskd.");
+    LOGI("Process is not zygote, it's NoZygiskd.");
 
     return;
   }
@@ -246,17 +246,17 @@ __attribute__((constructor)) static void no_initialization(void) {
   struct maps *maps = get_global_maps();
   for (size_t i = 0; i < maps->size; i++) {
     struct map *map = &maps->maps[i];
-    if (!map->path || !strstr(map->path, "rezygisk")) continue;
+    if (!map->path || !strstr(map->path, "nozygisk")) continue;
 
     if (!rz_base) rz_base = (void *)map->addr_start;
     rz_dev = map->dev;
     rz_ino = map->inode;
 
-    LOGD("Found ReZygisk map at %s, dev=%d, ino=%d", map->path, (int)rz_dev, (int)rz_ino);
+    LOGD("Found NoZygisk map at %s, dev=%d, ino=%d", map->path, (int)rz_dev, (int)rz_ino);
   }
 
   if (rz_dev == 0 || rz_ino == 0) {
-    LOGE("Failed to find ReZygisk's library in maps, requested to dlclose No Wheel.");
+    LOGE("Failed to find NoZygisk's library in maps, requested to dlclose No Wheel.");
 
     g_state.is_ignoring = true;
 

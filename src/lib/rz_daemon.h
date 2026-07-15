@@ -1,4 +1,4 @@
-/* INFO: ReZygisk code */
+/* INFO: NoZygisk code */
 
 #ifndef RZ_DAEMON_H
 #define RZ_DAEMON_H
@@ -16,7 +16,7 @@
 
 #define SOCKET_FILE_NAME LP_SELECT("cp32", "cp64") ".sock"
 
-enum rezygiskd_actions {
+enum nozygiskd_actions {
   PingHeartbeat,
   GetProcessFlags,
   GetInfo,
@@ -32,10 +32,10 @@ enum mount_namespace_state {
   Mounted
 };
 
-#define TMP_PATH "/data/adb/rezygisk"
+#define TMP_PATH "/data/adb/nozygisk"
 
-int rezygiskd_connect(uint8_t retry);
+int nozygiskd_connect(uint8_t retry);
 
-bool rezygiskd_update_mns(enum mount_namespace_state nms_state, char *buf, size_t buf_size);
+bool nozygiskd_update_mns(enum mount_namespace_state nms_state, char *buf, size_t buf_size);
 
 #endif /* RZ_DAEMON_H */

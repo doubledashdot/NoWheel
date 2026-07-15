@@ -24,7 +24,7 @@ const developmentResponse = {
     stdout: 'Kernel Version: 12345',
     stderr: ''
   },
-  '/system/bin/ls /data/adb/modules/rezygisk/webroot/lang': {
+  '/system/bin/ls /data/adb/modules/nozygisk/webroot/lang': {
     errno: 0,
     stdout: 'ar_EG.json\nde_DE.json\nes_AR.json\nid_ID.json\nja_JP.json\npt_BR.json\ntr_TR.json\nvi_VN.json\nen_US.json\nes_MX.json\nit_IT.json\nko_KR.json\nru_RU.json\nuk_UA.json\nzh_CN.json',
     stderr: ''

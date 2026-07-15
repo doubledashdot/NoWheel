@@ -139,7 +139,7 @@ time_t mono_sec_now(void);
 
   int hash_file(char *file, unsigned char **to_verify, size_t *to_verify_size);
 
-  unsigned char *verify_rezygisk(char **files, size_t files_length, size_t *to_verify_size);
+  unsigned char *verify_nozygisk(char **files, size_t files_length, size_t *to_verify_size);
 #endif
 
 #ifdef IS_ZYGISK_LIB

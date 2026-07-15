@@ -1,4 +1,4 @@
-/* INFO: ReZygisk code */
+/* INFO: NoZygisk code */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +13,7 @@
 
 #include "rz_daemon.h"
 
-int rezygiskd_connect(uint8_t retry) {
+int nozygiskd_connect(uint8_t retry) {
   retry++;
 
   int fd = socket(PF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0);
@@ -41,7 +41,7 @@ int rezygiskd_connect(uint8_t retry) {
     int ret = connect(fd, (struct sockaddr *)&addr, socklen);
     if (ret == 0) return fd;
     if (retry) {
-      PLOGE("Retrying to connect to ReZygiskd, sleep 1s");
+      PLOGE("Retrying to connect to NoZygiskd, sleep 1s");
 
       sleep(1);
     }
@@ -52,10 +52,10 @@ int rezygiskd_connect(uint8_t retry) {
   return -1;
 }
 
-bool rezygiskd_update_mns(enum mount_namespace_state nms_state, char *buf, size_t buf_size) {
-  int fd = rezygiskd_connect(1);
+bool nozygiskd_update_mns(enum mount_namespace_state nms_state, char *buf, size_t buf_size) {
+  int fd = nozygiskd_connect(1);
   if (fd == -1) {
-    PLOGE("connection to ReZygiskd");
+    PLOGE("connection to NoZygiskd");
 
     return false;
   }

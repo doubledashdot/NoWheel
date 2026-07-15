@@ -47,7 +47,7 @@ body:
       description: "ALL modules that are installed in the affected device. Provide status (enabled or disabled), name, creator, version, and link to its repository or website. You must follow the EXACT format of the placeholder below. The modules must be separated by status, the enabled ones first, and then the disabled ones, if any."
       placeholder: |
         e.g.
-        Enabled. ReZygisk by The PerformanC Organization, version 1.2.3, available at https://github.com/PerformanC/ReZygisk
+        Enabled. NoZygisk by The PerformanC Organization, version 1.2.3, available at https://github.com/PerformanC/NoZygisk
         Disabled. ReLSPosed by ThePedroo, version 3.2.1, available at https://github.com/ThePedroo/ReLSPosed
         ...
     validations:
