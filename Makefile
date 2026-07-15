@@ -2,15 +2,13 @@ BUILD_PATH = build/src
 ZYGISK_PATH = $(BUILD_PATH)/zygisk
 CMD_PATH = $(BUILD_PATH)/cmd
 
-ARCHS ?= arm64-v8a armeabi-v7a x86 x64
+ARCHS ?= arm64-v8a armeabi-v7a
 ARCH ?= arm64-v8a
 
 API_LEVEL ?= 34
 
 TARGET_arm64-v8a = aarch64-linux-android$(API_LEVEL)
 TARGET_armeabi-v7a = armv7a-linux-androideabi$(API_LEVEL)
-TARGET_x86 = i686-linux-android$(API_LEVEL)
-TARGET_x64 = x86_64-linux-android$(API_LEVEL)
 
 CFILES_ZYGISK = src/lib/elf_util.c src/lib/hiding.c src/lib/main.c src/lib/rz_daemon.c src/lib/utils.c
 CFILES_CMD = src/cmd/main.c src/cmd/utils.c src/lib/utils.c src/system_properties/src/*.c

@@ -4,7 +4,7 @@ SKIPUNZIP=1
 VERSION=$(grep_prop version "${TMPDIR}/module.prop")
 ui_print "- Installing No Wheel $VERSION"
 
-if [ "$ARCH" != "arm" ] && [ "$ARCH" != "arm64" ] && [ "$ARCH" != "x86" ] && [ "$ARCH" != "x64" ]; then
+if [ "$ARCH" != "arm" ] && [ "$ARCH" != "arm64" ]; then
   abort "! Unsupported platform: $ARCH"
 else
   ui_print "- Device platform: $ARCH"
@@ -93,38 +93,17 @@ fi
 SUPPORTS_32BIT=false
 SUPPORTS_64BIT=false
 
-if [[ "$CPU_ABIS" == *"x86"* && "$CPU_ABIS" != "x86_64" || "$CPU_ABIS" == *"armeabi"* ]]; then
+if [[ "$CPU_ABIS" == *"armeabi"* ]]; then
   SUPPORTS_32BIT=true
   ui_print "- Device supports 32-bit"
 fi
 
-if [[ "$CPU_ABIS" == *"x86_64"* || "$CPU_ABIS" == *"arm64-v8a"* ]]; then
+if [[ "$CPU_ABIS" == *"arm64-v8a"* ]]; then
   SUPPORTS_64BIT=true
   ui_print "- Device supports 64-bit"
 fi
 
-if [ "$ARCH" = "x86" ] || [ "$ARCH" = "x64" ]; then
-  if [ "$SUPPORTS_32BIT" = true ]; then
-    ui_print "- Extracting x86 libraries"
-
-    extract "$ZIPFILE" 'zygisk/x86/libexample.so' "$MODPATH/zygisk" true
-    mv "$MODPATH/zygisk/libexample.so" "$MODPATH/zygisk/x86.so"
-  fi
-    
-  if [ "$SUPPORTS_64BIT" = true ]; then
-     ui_print "- Extracting x64 libraries"
-
-    extract "$ZIPFILE" 'zygisk/x64/libexample.so' "$MODPATH/zygisk" true
-    mv "$MODPATH/zygisk/libexample.so" "$MODPATH/zygisk/x86_64.so"
-  fi
-
-  if [ "$ARCH" = "x86" ]; then
-    extract "$ZIPFILE" 'cmd/x86/no-wheel' "$MODPATH/cmd" true
-  else
-    extract "$ZIPFILE" 'cmd/x64/no-wheel' "$MODPATH/cmd" true
-  fi
-else
-  if [ "$SUPPORTS_32BIT" = true ]; then
+if [ "$SUPPORTS_32BIT" = true ]; then
     ui_print "- Extracting arm libraries"
 
     extract "$ZIPFILE" 'zygisk/armeabi-v7a/libexample.so' "$MODPATH/zygisk" true
@@ -142,7 +121,6 @@ else
     extract "$ZIPFILE" 'cmd/armeabi-v7a/no-wheel' "$MODPATH/cmd" true
   elif [ "$ARCH" = "arm64" ]; then
     extract "$ZIPFILE" 'cmd/arm64-v8a/no-wheel' "$MODPATH/cmd" true
-  fi
 fi
 
 ui_print "- Setting permissions"

@@ -831,10 +831,6 @@ struct no_mem_info no_get_mem_info(void) {
     int fd = open("/data/adb/modules/no_wheel/zygisk/arm64-v8a.so", O_RDONLY);
   #elif defined(__arm__)
     int fd = open("/data/adb/modules/no_wheel/zygisk/armeabi-v7a.so", O_RDONLY);
-  #elif defined(__x86_64__)
-    int fd = open("/data/adb/modules/no_wheel/zygisk/x86_64.so", O_RDONLY);
-  #elif defined(__i386__)
-    int fd = open("/data/adb/modules/no_wheel/zygisk/x86.so", O_RDONLY);
   #else
     #error "Unsupported architecture"
   #endif
