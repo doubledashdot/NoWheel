@@ -826,15 +826,15 @@ static void *_page_end(uintptr_t addr) {
   return (void *)((addr + getpagesize() - 1) & ~(getpagesize() - 1));
 }
 
-struct tw_mem_info tw_get_mem_info(void) {
+struct no_mem_info no_get_mem_info(void) {
   #ifdef __aarch64__
-    int fd = open("/data/adb/modules/treat_wheel/zygisk/arm64-v8a.so", O_RDONLY);
+    int fd = open("/data/adb/modules/no_wheel/zygisk/arm64-v8a.so", O_RDONLY);
   #elif defined(__arm__)
-    int fd = open("/data/adb/modules/treat_wheel/zygisk/armeabi-v7a.so", O_RDONLY);
+    int fd = open("/data/adb/modules/no_wheel/zygisk/armeabi-v7a.so", O_RDONLY);
   #elif defined(__x86_64__)
-    int fd = open("/data/adb/modules/treat_wheel/zygisk/x86_64.so", O_RDONLY);
+    int fd = open("/data/adb/modules/no_wheel/zygisk/x86_64.so", O_RDONLY);
   #elif defined(__i386__)
-    int fd = open("/data/adb/modules/treat_wheel/zygisk/x86.so", O_RDONLY);
+    int fd = open("/data/adb/modules/no_wheel/zygisk/x86.so", O_RDONLY);
   #else
     #error "Unsupported architecture"
   #endif
@@ -845,7 +845,7 @@ struct tw_mem_info tw_get_mem_info(void) {
 
     close(fd);
 
-    return (struct tw_mem_info) { 0 };
+    return (struct no_mem_info) { 0 };
   }
 
   ElfW(Phdr) *phdrs = malloc(ehdr.e_phentsize * ehdr.e_phnum);
@@ -856,7 +856,7 @@ struct tw_mem_info tw_get_mem_info(void) {
 
     close(fd);
 
-    return (struct tw_mem_info) { 0 };
+    return (struct no_mem_info) { 0 };
   }
 
   ElfW(Addr) lo = UINTPTR_MAX, hi = 0;
@@ -874,23 +874,23 @@ struct tw_mem_info tw_get_mem_info(void) {
   if (!maps) {
     LOGE("Failed to parse maps");
 
-    return (struct tw_mem_info) { 0 };
+    return (struct no_mem_info) { 0 };
   }
 
-  void *tw_mem_start = NULL;
+  void *no_mem_start = NULL;
   for (size_t i = 0; i < maps->size; i++) {
     struct map *map = &maps->maps[i];
-    if (!map->path || !strstr(map->path, "treat_wheel/zygisk/")) continue;
+    if (!map->path || !strstr(map->path, "no_wheel/zygisk/")) continue;
 
-    tw_mem_start = (void *)map->addr_start;
+    no_mem_start = (void *)map->addr_start;
 
     break;
   }
 
   free_maps(maps);
 
-  return (struct tw_mem_info) {
-    .start = (uintptr_t)tw_mem_start,
+  return (struct no_mem_info) {
+    .start = (uintptr_t)no_mem_start,
     .size = (size_t)((uintptr_t)_page_end(hi) - (uintptr_t)_page_start(lo))
   };
 }

@@ -6,7 +6,7 @@ import { runMainPageTransition, runMiniPageEnter, runMiniPageLeave } from './ani
 /* INFO: Prototypes */
 import utils from './utils.js'
 
-const moduleName = 'TreatWheel'
+const moduleName = 'NoWheel'
 const head = document.getElementsByTagName('head')[0]
 const miniPageRegex = /mini_(.*)_(.*)/
 
@@ -251,7 +251,7 @@ async function loadPages() {
       INFO: Usually dynamic HTML leads to a lot of visual problems, which
               can vary from missing CSS for an extremely brief moment to
               a full page re-rendering. This is why we load all pages at
-              once and then we just switch between them.
+              once and then we just switch benoeen them.
     */
 
     let amountLoaded = 0

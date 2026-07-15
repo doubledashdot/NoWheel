@@ -1,3 +1,3 @@
 MODDIR="${0%/*}"
 
-$MODDIR/cmd/treat-wheel &
+$MODDIR/cmd/no-wheel &

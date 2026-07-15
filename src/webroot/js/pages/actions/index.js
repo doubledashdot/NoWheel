@@ -16,7 +16,7 @@ function _writeState(HidingState) {
   if (HidingState.isModuleLoadingTracesHiding) state += 'disable_module_loading_traces_hiding=true\n'
   if (HidingState.isFridaTracesHiding) state += 'disable_frida_traces_hiding=true\n'
 
-  return exec(`echo "${state}" > /data/adb/treat_wheel/state`)
+  return exec(`echo "${state}" > /data/adb/no_wheel/state`)
 }
 
 const HidingState = {
@@ -33,9 +33,9 @@ const HidingState = {
 }
 
 export async function loadOnce() {
-  let state = await exec('cat /data/adb/treat_wheel/state')
+  let state = await exec('cat /data/adb/no_wheel/state')
   if (state.errno !== 0) {
-    toast('Error getting state of Treat Wheel!')
+    toast('Error getting state of No Wheel!')
 
     return;
   }
@@ -57,36 +57,36 @@ export async function loadOnce() {
 }
 
 export async function loadOnceView() {
-  const tw_ignore_switch = document.getElementById('tw_ignore_switch')
-  const tw_disable_prop_spoofing_switch = document.getElementById('tw_disable_prop_spoofing_switch')
-  const tw_disable_gsi_hiding_switch = document.getElementById('tw_disable_gsi_hiding_switch')
-  const tw_disable_zygote_mountinfo_leak_fixing_switch = document.getElementById('tw_disable_zygote_mountinfo_leak_fixing_switch')
-  const tw_disable_maps_hiding_switch = document.getElementById('tw_disable_maps_hiding_switch')
-  const tw_disable_revanced_mounts_umount_switch = document.getElementById('tw_disable_revanced_mounts_umount_switch')
-  const tw_disable_custom_font_loading_switch = document.getElementById('tw_disable_custom_font_loading_switch')
-  const tw_disable_denylist_logic_inversion_switch = document.getElementById('tw_disable_denylist_logic_inversion_switch')
-  const tw_disable_module_loading_traces_hiding_switch = document.getElementById('tw_disable_module_loading_traces_hiding_switch')
-  const tw_disable_frida_traces_hiding_switch = document.getElementById('tw_disable_frida_traces_hiding_switch')
+  const no_ignore_switch = document.getElementById('no_ignore_switch')
+  const no_disable_prop_spoofing_switch = document.getElementById('no_disable_prop_spoofing_switch')
+  const no_disable_gsi_hiding_switch = document.getElementById('no_disable_gsi_hiding_switch')
+  const no_disable_zygote_mountinfo_leak_fixing_switch = document.getElementById('no_disable_zygote_mountinfo_leak_fixing_switch')
+  const no_disable_maps_hiding_switch = document.getElementById('no_disable_maps_hiding_switch')
+  const no_disable_revanced_mounts_umount_switch = document.getElementById('no_disable_revanced_mounts_umount_switch')
+  const no_disable_custom_font_loading_switch = document.getElementById('no_disable_custom_font_loading_switch')
+  const no_disable_denylist_logic_inversion_switch = document.getElementById('no_disable_denylist_logic_inversion_switch')
+  const no_disable_module_loading_traces_hiding_switch = document.getElementById('no_disable_module_loading_traces_hiding_switch')
+  const no_disable_frida_traces_hiding_switch = document.getElementById('no_disable_frida_traces_hiding_switch')
 
-  if (HidingState.isIgnoring) tw_ignore_switch.checked = true
-  if (HidingState.isSpoofingProps) tw_disable_prop_spoofing_switch.checked = true
-  if (HidingState.isHidingGSI) tw_disable_gsi_hiding_switch.checked = true
-  if (HidingState.isHidingZygoteLeak) tw_disable_zygote_mountinfo_leak_fixing_switch.checked = true
-  if (HidingState.isMapsHiding) tw_disable_maps_hiding_switch.checked = true
-  if (HidingState.isRevancedMountsUmount) tw_disable_revanced_mounts_umount_switch.checked = true
-  if (HidingState.isCustomFontLoading) tw_disable_custom_font_loading_switch.checked = true
-  if (HidingState.isDenylistLogicInversion) tw_disable_denylist_logic_inversion_switch.checked = true
-  if (HidingState.isModuleLoadingTracesHiding) tw_disable_module_loading_traces_hiding_switch.checked = true
-  if (HidingState.isFridaTracesHiding) tw_disable_frida_traces_hiding_switch.checked = true
+  if (HidingState.isIgnoring) no_ignore_switch.checked = true
+  if (HidingState.isSpoofingProps) no_disable_prop_spoofing_switch.checked = true
+  if (HidingState.isHidingGSI) no_disable_gsi_hiding_switch.checked = true
+  if (HidingState.isHidingZygoteLeak) no_disable_zygote_mountinfo_leak_fixing_switch.checked = true
+  if (HidingState.isMapsHiding) no_disable_maps_hiding_switch.checked = true
+  if (HidingState.isRevancedMountsUmount) no_disable_revanced_mounts_umount_switch.checked = true
+  if (HidingState.isCustomFontLoading) no_disable_custom_font_loading_switch.checked = true
+  if (HidingState.isDenylistLogicInversion) no_disable_denylist_logic_inversion_switch.checked = true
+  if (HidingState.isModuleLoadingTracesHiding) no_disable_module_loading_traces_hiding_switch.checked = true
+  if (HidingState.isFridaTracesHiding) no_disable_frida_traces_hiding_switch.checked = true
 
-  tw_disable_gsi_hiding_switch.disabled = HidingState.isIgnoring
-  tw_disable_prop_spoofing_switch.disabled = HidingState.isIgnoring
-  tw_disable_zygote_mountinfo_leak_fixing_switch.disabled = HidingState.isIgnoring
-  tw_disable_maps_hiding_switch.disabled = HidingState.isIgnoring
-  tw_disable_revanced_mounts_umount_switch.disabled = HidingState.isIgnoring
-  tw_disable_custom_font_loading_switch.disabled = HidingState.isIgnoring
-  tw_disable_module_loading_traces_hiding_switch.disabled = HidingState.isIgnoring
-  tw_disable_frida_traces_hiding_switch.disabled = HidingState.isIgnoring
+  no_disable_gsi_hiding_switch.disabled = HidingState.isIgnoring
+  no_disable_prop_spoofing_switch.disabled = HidingState.isIgnoring
+  no_disable_zygote_mountinfo_leak_fixing_switch.disabled = HidingState.isIgnoring
+  no_disable_maps_hiding_switch.disabled = HidingState.isIgnoring
+  no_disable_revanced_mounts_umount_switch.disabled = HidingState.isIgnoring
+  no_disable_custom_font_loading_switch.disabled = HidingState.isIgnoring
+  no_disable_module_loading_traces_hiding_switch.disabled = HidingState.isIgnoring
+  no_disable_frida_traces_hiding_switch.disabled = HidingState.isIgnoring
 
   const action_card = document.getElementsByClassName('action_card')
   const sliders = document.getElementsByClassName('slider')
@@ -96,10 +96,10 @@ export async function loadOnceView() {
   }
 
   if (globalThis.rootInfo.impl !== 'Magisk' && HidingState.isDenylistLogicInversion) {
-    tw_disable_denylist_logic_inversion_switch.disabled = true
-    tw_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
+    no_disable_denylist_logic_inversion_switch.disabled = true
+    no_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
   } else {
-    tw_disable_denylist_logic_inversion_switch.disabled = HidingState.isIgnoring
+    no_disable_denylist_logic_inversion_switch.disabled = HidingState.isIgnoring
   }
 }
 
@@ -108,30 +108,30 @@ export async function onceViewAfterUpdate() {
 }
 
 export async function load() {
-  const tw_ignore_switch = document.getElementById('tw_ignore_switch')
-  const tw_disable_prop_spoofing_switch = document.getElementById('tw_disable_prop_spoofing_switch')
-  const tw_disable_gsi_hiding_switch = document.getElementById('tw_disable_gsi_hiding_switch')
-  const tw_disable_zygote_mountinfo_leak_fixing_switch = document.getElementById('tw_disable_zygote_mountinfo_leak_fixing_switch')
-  const tw_disable_maps_hiding_switch = document.getElementById('tw_disable_maps_hiding_switch')
-  const tw_disable_revanced_mounts_umount_switch = document.getElementById('tw_disable_revanced_mounts_umount_switch')
-  const tw_disable_custom_font_loading_switch = document.getElementById('tw_disable_custom_font_loading_switch')
-  const tw_disable_denylist_logic_inversion_switch = document.getElementById('tw_disable_denylist_logic_inversion_switch')
-  const tw_disable_module_loading_traces_hiding_switch = document.getElementById('tw_disable_module_loading_traces_hiding_switch')
-  const tw_disable_frida_traces_hiding_switch = document.getElementById('tw_disable_frida_traces_hiding_switch')
+  const no_ignore_switch = document.getElementById('no_ignore_switch')
+  const no_disable_prop_spoofing_switch = document.getElementById('no_disable_prop_spoofing_switch')
+  const no_disable_gsi_hiding_switch = document.getElementById('no_disable_gsi_hiding_switch')
+  const no_disable_zygote_mountinfo_leak_fixing_switch = document.getElementById('no_disable_zygote_mountinfo_leak_fixing_switch')
+  const no_disable_maps_hiding_switch = document.getElementById('no_disable_maps_hiding_switch')
+  const no_disable_revanced_mounts_umount_switch = document.getElementById('no_disable_revanced_mounts_umount_switch')
+  const no_disable_custom_font_loading_switch = document.getElementById('no_disable_custom_font_loading_switch')
+  const no_disable_denylist_logic_inversion_switch = document.getElementById('no_disable_denylist_logic_inversion_switch')
+  const no_disable_module_loading_traces_hiding_switch = document.getElementById('no_disable_module_loading_traces_hiding_switch')
+  const no_disable_frida_traces_hiding_switch = document.getElementById('no_disable_frida_traces_hiding_switch')
 
   async function _resetStatus() {
-    await exec('rm -rf /data/adb/treat_wheel/status')
+    await exec('rm -rf /data/adb/no_wheel/status')
   }
 
   function _updateButtonsState() {
-    tw_disable_gsi_hiding_switch.disabled = HidingState.isIgnoring
-    tw_disable_prop_spoofing_switch.disabled = HidingState.isIgnoring
-    tw_disable_zygote_mountinfo_leak_fixing_switch.disabled = HidingState.isIgnoring
-    tw_disable_maps_hiding_switch.disabled = HidingState.isIgnoring
-    tw_disable_revanced_mounts_umount_switch.disabled = HidingState.isIgnoring
-    tw_disable_custom_font_loading_switch.disabled = HidingState.isIgnoring
-    tw_disable_module_loading_traces_hiding_switch.disabled = HidingState.isIgnoring
-    tw_disable_frida_traces_hiding_switch.disabled = HidingState.isIgnoring
+    no_disable_gsi_hiding_switch.disabled = HidingState.isIgnoring
+    no_disable_prop_spoofing_switch.disabled = HidingState.isIgnoring
+    no_disable_zygote_mountinfo_leak_fixing_switch.disabled = HidingState.isIgnoring
+    no_disable_maps_hiding_switch.disabled = HidingState.isIgnoring
+    no_disable_revanced_mounts_umount_switch.disabled = HidingState.isIgnoring
+    no_disable_custom_font_loading_switch.disabled = HidingState.isIgnoring
+    no_disable_module_loading_traces_hiding_switch.disabled = HidingState.isIgnoring
+    no_disable_frida_traces_hiding_switch.disabled = HidingState.isIgnoring
 
     const action_card = document.getElementsByClassName('action_card')
     const sliders = document.getElementsByClassName('slider')
@@ -141,14 +141,14 @@ export async function load() {
     }
 
     if (globalThis.rootInfo.impl !== 'Magisk' && HidingState.isDenylistLogicInversion) {
-      tw_disable_denylist_logic_inversion_switch.disabled = true
-      tw_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
+      no_disable_denylist_logic_inversion_switch.disabled = true
+      no_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
     } else {
-      tw_disable_denylist_logic_inversion_switch.disabled = HidingState.isIgnoring
+      no_disable_denylist_logic_inversion_switch.disabled = HidingState.isIgnoring
     }
   }
 
-  utils.addListener(tw_ignore_switch, 'click', async () => {
+  utils.addListener(no_ignore_switch, 'click', async () => {
     HidingState.isIgnoring = !HidingState.isIgnoring
 
     _updateButtonsState()
@@ -156,69 +156,69 @@ export async function load() {
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_prop_spoofing_switch, 'click', async () => {
+  utils.addListener(no_disable_prop_spoofing_switch, 'click', async () => {
     HidingState.isSpoofingProps = !HidingState.isSpoofingProps
     _resetStatus()
 
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_gsi_hiding_switch, 'click', async () => {
+  utils.addListener(no_disable_gsi_hiding_switch, 'click', async () => {
     HidingState.isHidingGSI = !HidingState.isHidingGSI
     _resetStatus()
 
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_zygote_mountinfo_leak_fixing_switch, 'click', async () => {
+  utils.addListener(no_disable_zygote_mountinfo_leak_fixing_switch, 'click', async () => {
     HidingState.isHidingZygoteLeak = !HidingState.isHidingZygoteLeak
     _resetStatus()
 
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_maps_hiding_switch, 'click', async () => {
+  utils.addListener(no_disable_maps_hiding_switch, 'click', async () => {
     HidingState.isMapsHiding = !HidingState.isMapsHiding
     _resetStatus()
 
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_revanced_mounts_umount_switch, 'click', async () => {
+  utils.addListener(no_disable_revanced_mounts_umount_switch, 'click', async () => {
     HidingState.isRevancedMountsUmount = !HidingState.isRevancedMountsUmount
     _resetStatus()
 
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_custom_font_loading_switch, 'click', async () => {
+  utils.addListener(no_disable_custom_font_loading_switch, 'click', async () => {
     HidingState.isCustomFontLoading = !HidingState.isCustomFontLoading
     _resetStatus()
 
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_denylist_logic_inversion_switch, 'click', async () => {
+  utils.addListener(no_disable_denylist_logic_inversion_switch, 'click', async () => {
     HidingState.isDenylistLogicInversion = !HidingState.isDenylistLogicInversion
     _resetStatus()
 
     /* INFO: Only meant for Magisk */
     if (globalThis.rootInfo.impl !== 'Magisk') {
-      tw_disable_denylist_logic_inversion_switch.disabled = true
-      tw_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
+      no_disable_denylist_logic_inversion_switch.disabled = true
+      no_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
     }
 
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_module_loading_traces_hiding_switch, 'click', async () => {
+  utils.addListener(no_disable_module_loading_traces_hiding_switch, 'click', async () => {
     HidingState.isModuleLoadingTracesHiding = !HidingState.isModuleLoadingTracesHiding
     _resetStatus()
 
     await _writeState(HidingState)
   })
 
-  utils.addListener(tw_disable_frida_traces_hiding_switch, 'click', async () => {
+  utils.addListener(no_disable_frida_traces_hiding_switch, 'click', async () => {
     HidingState.isFridaTracesHiding = !HidingState.isFridaTracesHiding
     _resetStatus()
 

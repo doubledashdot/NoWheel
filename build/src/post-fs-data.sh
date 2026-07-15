@@ -1,1 +1,1 @@
-rm -rf /data/adb/treat_wheel/status
+rm -rf /data/adb/no_wheel/status

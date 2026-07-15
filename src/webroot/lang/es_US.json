@@ -26,43 +26,43 @@
       },
       "ignoreMode": {
         "title": "Ignorar todo",
-        "description": "Esta opción deshabilitará temporalmente Treat Wheel. Puede volver a habilitarse sin reiniciar, pero al hacerlo todas las opciones de ocultamiento serán inútiles hasta que se desactive."
+        "description": "Esta opción deshabilitará temporalmente No Wheel. Puede volver a habilitarse sin reiniciar, pero al hacerlo todas las opciones de ocultamiento serán inútiles hasta que se desactive."
       },
       "propSpoofing": {
         "title": "Desactivar props spoofing",
-        "description": "Esta opción hará que Treat Wheel deje de ocultar las funciones relacionadas con ROMs personalizadas. Se requiere reiniciar el equipo para que este cambio tenga efecto."
+        "description": "Esta opción hará que No Wheel deje de ocultar las funciones relacionadas con ROMs personalizadas. Se requiere reiniciar el equipo para que este cambio tenga efecto."
       },
       "gsiTraceHiding": {
         "title": "Deshabilitar ocultamiento de rastros GSI",
-        "description": "Esta opción hará que Treat Wheel deje de ocultar rastros GSI."
+        "description": "Esta opción hará que No Wheel deje de ocultar rastros GSI."
       },
       "zygoteMountInfoLeakFixing": {
         "title": "Deshabilitar corrección de fuga de mountinfo de Zygote",
-        "description": "Esta opción hará que Treat Wheel deje de corregir la fuga de información de mountinfo que crea Zygote, dejándola tal como se comporta en sistemas sin root. Requiere Android 11 o superior."
+        "description": "Esta opción hará que No Wheel deje de corregir la fuga de información de mountinfo que crea Zygote, dejándola tal como se comporta en sistemas sin root. Requiere Android 11 o superior."
       },
       "mapsHiding": {
         "title": "Deshabilitar ocultamiento de mapas",
-        "description": "Esta opción hará que Treat Wheel deje de ocultar mapeos sospechosos. Este tipo de ocultamiento es inútil, pero ayuda a pasar algunas detecciones."
+        "description": "Esta opción hará que No Wheel deje de ocultar mapeos sospechosos. Este tipo de ocultamiento es inútil, pero ayuda a pasar algunas detecciones."
       },
       "ReVancedModuleMountsHiding": {
         "title": "Deshabilitar ocultamiento de montajes de módulos ReVanced",
-        "description": "Esta opción hará que Treat Wheel deje de ocultar los montajes que crean los módulos ReVanced globalmente. Los módulos de ReVanced deben tener soporte directo para Treat Wheel para que este pueda desmontarlos."
+        "description": "Esta opción hará que No Wheel deje de ocultar los montajes que crean los módulos ReVanced globalmente. Los módulos de ReVanced deben tener soporte directo para No Wheel para que este pueda desmontarlos."
       },
       "customFontLoading": {
         "title": "Deshabilitar carga de fuentes personalizadas",
-        "description": "Esta opción hará que Treat Wheel deje de cargar fuentes personalizadas del sistema."
+        "description": "Esta opción hará que No Wheel deje de cargar fuentes personalizadas del sistema."
       },
       "denylistLogicInversion": {
         "title": "Deshabilitar inversión de lógica de la DenyList",
-        "description": "Esta opción hará que Treat Wheel deje de invertir la DenyList, de modo que las aplicaciones en la DenyList tendrán root oculto, y las que no estén no lo tendrán oculto. Similar a la SuList de Magisk Kitsune cuando esta opción está deshabilitada."
+        "description": "Esta opción hará que No Wheel deje de invertir la DenyList, de modo que las aplicaciones en la DenyList tendrán root oculto, y las que no estén no lo tendrán oculto. Similar a la SuList de Magisk Kitsune cuando esta opción está deshabilitada."
       },
       "moduleLoadingTracesHiding": {
         "title": "Deshabilitar ocultamiento de rastros de carga de módulos",
-        "description": "Esta opción hará que Treat Wheel deje de ocultar los rastros generadas por algunos módulos durante su carga."
+        "description": "Esta opción hará que No Wheel deje de ocultar los rastros generadas por algunos módulos durante su carga."
       },
       "fridaTracesHiding": {
         "title": "Deshabilitar ocultamiento de rastros de Frida",
-        "description": "Esta opción hará que Treat Wheel deje de ocultar los rastros de inyección generadas por Frida."
+        "description": "Esta opción hará que No Wheel deje de ocultar los rastros de inyección generadas por Frida."
       }
     },
     "settings": {

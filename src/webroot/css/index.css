@@ -42,7 +42,7 @@ a {
   display: flex;
   position: sticky;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-benoeen;
   top: 0;
   inset-inline: 0;
   padding: 20px 20px;
@@ -84,7 +84,7 @@ a {
   padding: 5px 15px 0 15px;
   margin: 0px 15px 0 15px;
   padding-bottom: 5px;
-  justify-content: space-between;
+  justify-content: space-benoeen;
   display: flex;
   align-items: center;
 }

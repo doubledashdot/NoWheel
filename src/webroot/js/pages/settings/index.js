@@ -16,7 +16,7 @@ export async function onceViewAfterUpdate() {
 }
 
 export async function load() {
-  const WebUIConfig = JSON.parse(localStorage.getItem('/TreatWheel/webui_config') || '{}')
+  const WebUIConfig = JSON.parse(localStorage.getItem('/NoWheel/webui_config') || '{}')
 
   const lang_page_toggle = document.getElementById('lang_page_toggle')
 
@@ -39,13 +39,13 @@ export async function load() {
     utils.addListener(window, 'click', setLanguageCb)
   })
 
-  const tw_webui_fullscreen_switch = document.getElementById('tw_webui_fullscreen_switch')
-  if (WebUIConfig.disableFullscreen) tw_webui_fullscreen_switch.checked = true
+  const no_webui_fullscreen_switch = document.getElementById('no_webui_fullscreen_switch')
+  if (WebUIConfig.disableFullscreen) no_webui_fullscreen_switch.checked = true
 
-  utils.addListener(tw_webui_fullscreen_switch, 'click', () => {
+  utils.addListener(no_webui_fullscreen_switch, 'click', () => {
     /* INFO: This is swapped, as it meant to disable the fullscreen */
     WebUIConfig.disableFullscreen = !WebUIConfig.disableFullscreen
-    localStorage.setItem('/TreatWheel/webui_config', JSON.stringify(WebUIConfig))
+    localStorage.setItem('/NoWheel/webui_config', JSON.stringify(WebUIConfig))
 
     fullScreen(!WebUIConfig.disableFullscreen)
   })

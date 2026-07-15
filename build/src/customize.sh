@@ -2,7 +2,7 @@
 SKIPUNZIP=1
 
 VERSION=$(grep_prop version "${TMPDIR}/module.prop")
-ui_print "- Installing Treat Wheel $VERSION"
+ui_print "- Installing No Wheel $VERSION"
 
 if [ "$ARCH" != "arm" ] && [ "$ARCH" != "arm64" ] && [ "$ARCH" != "x86" ] && [ "$ARCH" != "x64" ]; then
   abort "! Unsupported platform: $ARCH"
@@ -12,23 +12,23 @@ fi
 
 # INFO: Zygisk Assistant and NoHello are not supported. If present, refuse to install
 if [ -d "/data/adb/modules/zygisk_assistant" ] || [ -d "/data/adb/modules_update/zygisk_assistant" ]; then
-  abort "! Zygisk Assistant is outdated and causes detections. Please uninstall it before installing Treat Wheel."
+  abort "! Zygisk Assistant is outdated and causes detections. Please uninstall it before installing No Wheel."
 fi
 
 if [ -d "/data/adb/modules/nohello" ] || [ -d "/data/adb/modules_update/nohello" ]; then
-  abort "! NoHello is outdated and doesn't provide any benefits. Please uninstall it before installing Treat Wheel."
+  abort "! NoHello is outdated and doesn't provide any benefits. Please uninstall it before installing No Wheel."
 fi
 
 REZYGISK_REQUIRED_VERSION=508
 
-# INFO: Treat Wheel won't work in any other Zygisk anyway. Demand ReZygisk.
+# INFO: No Wheel won't work in any other Zygisk anyway. Demand ReZygisk.
 if [ -d "/data/adb/modules_update/rezygisk" ]; then
   REZYGISK_PATH="/data/adb/modules_update/rezygisk"
 elif [ -d "/data/adb/modules/rezygisk" ]; then
   REZYGISK_PATH="/data/adb/modules/rezygisk"
 else
   ui_print "- ReZygisk $REZYGISK_REQUIRED_VERSION or higher is required but not found."
-  abort    "- No other Zygisk implementation is supported or works with Treat Wheel."
+  abort    "- No other Zygisk implementation is supported or works with No Wheel."
 fi
 
 REZYGISK_VERSION=$(grep_prop versionCode $REZYGISK_PATH/module.prop)
@@ -119,9 +119,9 @@ if [ "$ARCH" = "x86" ] || [ "$ARCH" = "x64" ]; then
   fi
 
   if [ "$ARCH" = "x86" ]; then
-    extract "$ZIPFILE" 'cmd/x86/treat-wheel' "$MODPATH/cmd" true
+    extract "$ZIPFILE" 'cmd/x86/no-wheel' "$MODPATH/cmd" true
   else
-    extract "$ZIPFILE" 'cmd/x64/treat-wheel' "$MODPATH/cmd" true
+    extract "$ZIPFILE" 'cmd/x64/no-wheel' "$MODPATH/cmd" true
   fi
 else
   if [ "$SUPPORTS_32BIT" = true ]; then
@@ -139,9 +139,9 @@ else
   fi
 
   if [ "$ARCH" = "arm" ]; then
-    extract "$ZIPFILE" 'cmd/armeabi-v7a/treat-wheel' "$MODPATH/cmd" true
+    extract "$ZIPFILE" 'cmd/armeabi-v7a/no-wheel' "$MODPATH/cmd" true
   elif [ "$ARCH" = "arm64" ]; then
-    extract "$ZIPFILE" 'cmd/arm64-v8a/treat-wheel' "$MODPATH/cmd" true
+    extract "$ZIPFILE" 'cmd/arm64-v8a/no-wheel' "$MODPATH/cmd" true
   fi
 fi
 
@@ -152,20 +152,20 @@ set_perm_recursive "$MODPATH/cmd" 0 0 0755 0755
 ui_print "- Extracting WebUI"
 unzip -o "$ZIPFILE" "webroot/*" -d "$MODPATH"
 
-if [ ! -d "/data/adb/treat_wheel" ]; then
-  mkdir "/data/adb/treat_wheel"
+if [ ! -d "/data/adb/no_wheel" ]; then
+  mkdir "/data/adb/no_wheel"
 
-  touch "/data/adb/treat_wheel/state"
+  touch "/data/adb/no_wheel/state"
 fi
 
 # INFO: Only append the defaults if they are not already there
 
-if ! grep -q "disable_revanced_mounts_umount=true" "/data/adb/treat_wheel/state"; then
-  echo "disable_revanced_mounts_umount=true" >> "/data/adb/treat_wheel/state"
+if ! grep -q "disable_revanced_mounts_umount=true" "/data/adb/no_wheel/state"; then
+  echo "disable_revanced_mounts_umount=true" >> "/data/adb/no_wheel/state"
 fi
 
-if ! grep -q "disable_denylist_logic_inversion=true" "/data/adb/treat_wheel/state"; then
-  echo "disable_denylist_logic_inversion=true" >> "/data/adb/treat_wheel/state"
+if ! grep -q "disable_denylist_logic_inversion=true" "/data/adb/no_wheel/state"; then
+  echo "disable_denylist_logic_inversion=true" >> "/data/adb/no_wheel/state"
 fi
 
-ui_print "- Welcome to Treat Wheel $VERSION"
+ui_print "- Welcome to No Wheel $VERSION"

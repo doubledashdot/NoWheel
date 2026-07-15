@@ -80,32 +80,32 @@ build:
 		sed -i 's/ display: none;//g' $(BUILD_PATH)/webroot/js/pages/home/index.html; \
 	fi
 
-	@rm -rf ../build/TreatWheel.zip
-	@(cd $(BUILD_PATH) && zip -r ../TreatWheel.zip .) > /dev/null
+	@rm -rf ../build/NoWheel.zip
+	@(cd $(BUILD_PATH) && zip -r ../NoWheel.zip .) > /dev/null
 
 compile_arch:
 	@mkdir -p $(ZYGISK_PATH)/$(ARCH) > /dev/null
 	@mkdir -p $(CMD_PATH)/$(ARCH) > /dev/null
 
 	@$(CLANG) --target=$(TARGET_$(ARCH)) -fPIC -DIS_ZYGISK_LIB $(CFILES_ZYGISK) $(CFLAGS) -nostartfiles -shared -o $(ZYGISK_PATH)/$(ARCH)/libexample.so
-	@$(CLANG) --target=$(TARGET_$(ARCH)) -fPIC -DIS_CMD $(CFILES_CMD) $(CFLAGS) -Isrc/system_properties/include -DUTILS_NO_SSL -o $(CMD_PATH)/$(ARCH)/treat-wheel
+	@$(CLANG) --target=$(TARGET_$(ARCH)) -fPIC -DIS_CMD $(CFILES_CMD) $(CFLAGS) -Isrc/system_properties/include -DUTILS_NO_SSL -o $(CMD_PATH)/$(ARCH)/no-wheel
 
 	@$(STRIP) --strip-all $(ZYGISK_PATH)/$(ARCH)/libexample.so
-	@$(STRIP) --strip-all $(CMD_PATH)/$(ARCH)/treat-wheel
+	@$(STRIP) --strip-all $(CMD_PATH)/$(ARCH)/no-wheel
 
 clean:
 	@echo Cleaning build artifacts...
 	@rm -rf $(BUILD_PATH)/cmd
 	@rm -rf $(BUILD_PATH)/zygisk
 	@rm -rf $(BUILD_PATH)/webroot
-	@rm -rf ../build/TreatWheel.zip > /dev/null
+	@rm -rf ../build/NoWheel.zip > /dev/null
 
 installModule: build
-	$(ADB_PUSH) build/TreatWheel.zip /data/local/tmp
-	@$(ADB_SHELL)su -M -c "magisk --install-module /data/local/tmp/TreatWheel.zip 2&>/dev/null"|| \
-	$(ADB_SHELL)su -c "ksud module install /data/local/tmp/TreatWheel.zip 2&>/dev/null"||        \
-	$(ADB_SHELL)su -c "apd module install /data/local/tmp/TreatWheel.zip 2&>/dev/null"           \
-	&& $(ADB_SHELL)su -c rm /data/local/tmp/TreatWheel.zip                                       \
+	$(ADB_PUSH) build/NoWheel.zip /data/local/tmp
+	@$(ADB_SHELL)su -M -c "magisk --install-module /data/local/tmp/NoWheel.zip 2&>/dev/null"|| \
+	$(ADB_SHELL)su -c "ksud module install /data/local/tmp/NoWheel.zip 2&>/dev/null"||        \
+	$(ADB_SHELL)su -c "apd module install /data/local/tmp/NoWheel.zip 2&>/dev/null"           \
+	&& $(ADB_SHELL)su -c rm /data/local/tmp/NoWheel.zip                                       \
 	|| echo "[X] Could not find valid CLI to install the module"
 
 installModuleAndReboot: installModule
@@ -115,6 +115,6 @@ updateWebUI:
 	@echo Updating web UI...
 	@$(ADB_SHELL)su -c "rm -rf /data/local/tmp/webroot"
 	@$(ADB_PUSH) src/webroot /data/local/tmp/webroot
-	@$(ADB_SHELL)su -c "rm -rf /data/adb/modules/treat_wheel/webroot"
-	@$(ADB_SHELL)su -c "cp -r /data/local/tmp/webroot /data/adb/modules/treat_wheel"
+	@$(ADB_SHELL)su -c "rm -rf /data/adb/modules/no_wheel/webroot"
+	@$(ADB_SHELL)su -c "cp -r /data/local/tmp/webroot /data/adb/modules/no_wheel"
 	@$(ADB_SHELL)su -c "rm -rf /data/local/tmp/webroot"

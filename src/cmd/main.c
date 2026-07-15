@@ -15,7 +15,7 @@
 #include "api/system_properties.h"
 
 int main(void) {
-  FILE *fp = fopen("/data/adb/treat_wheel/state", "r");
+  FILE *fp = fopen("/data/adb/no_wheel/state", "r");
   if (!fp) {
     PLOGE("Open state file");
 
@@ -166,5 +166,5 @@ int main(void) {
   compact_props();
   fix_serials();
 
-  __android_log_print(ANDROID_LOG_INFO, "Treat Wheel", "has set and adjusted system properties successfully.\n");
+  __android_log_print(ANDROID_LOG_INFO, "No Wheel", "has set and adjusted system properties successfully.\n");
 }

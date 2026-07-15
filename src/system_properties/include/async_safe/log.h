@@ -5,7 +5,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-// Lightweight stand-ins for bionic async_safe logging helpers.
+// Lighnoeight stand-ins for bionic async_safe logging helpers.
 static inline int async_safe_format_buffer(char *buffer, size_t buffer_size, const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);

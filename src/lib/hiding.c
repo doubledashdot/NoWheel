@@ -132,8 +132,8 @@ void do_deinitialize(void) {
   }
 }
 
-int do_gsi_hiding(struct api_table *api_table, JNIEnv *tw_env) {
-  (void) api_table; (void) tw_env;
+int do_gsi_hiding(struct api_table *api_table, JNIEnv *no_env) {
+  (void) api_table; (void) no_env;
 
   LOGI("GH: GSI hiding is enabled, hiding traces.");
 
@@ -148,8 +148,8 @@ int do_gsi_hiding(struct api_table *api_table, JNIEnv *tw_env) {
 
 #define BIONIC_LINE_BUFFER_SIZE 1024
 
-int do_zygote_mountinfo_leak_hiding(struct api_table *api_table, JNIEnv *tw_env) {
-  (void) api_table; (void) tw_env;
+int do_zygote_mountinfo_leak_hiding(struct api_table *api_table, JNIEnv *no_env) {
+  (void) api_table; (void) no_env;
 
   LOGI("ZMLH: Zygote mountinfo leak hiding is enabled, hiding traces.");
 
@@ -166,8 +166,8 @@ int do_zygote_mountinfo_leak_hiding(struct api_table *api_table, JNIEnv *tw_env)
   return 1;
 }
 
-int do_maps_hiding(struct api_table *api_table, JNIEnv *tw_env) {
-  (void) api_table; (void) tw_env;
+int do_maps_hiding(struct api_table *api_table, JNIEnv *no_env) {
+  (void) api_table; (void) no_env;
 
   LOGI("MH: Maps hiding is enabled, hiding traces.");
 
@@ -211,8 +211,8 @@ int do_maps_hiding(struct api_table *api_table, JNIEnv *tw_env) {
   return 1;
 }
 
-int do_revanced_mounts_umount(struct api_table *api_table, JNIEnv *tw_env, const char *process_name) {
-  (void) api_table; (void) tw_env;
+int do_revanced_mounts_umount(struct api_table *api_table, JNIEnv *no_env, const char *process_name) {
+  (void) api_table; (void) no_env;
 
   LOGI("RVU: Revanced mounts umount is enabled, hiding traces.");
 
@@ -263,8 +263,8 @@ int do_revanced_mounts_umount(struct api_table *api_table, JNIEnv *tw_env, const
   return 1;
 }
 
-int do_custom_font_loading(struct api_table *api_table, JNIEnv *tw_env) {
-  (void) api_table; (void) tw_env;
+int do_custom_font_loading(struct api_table *api_table, JNIEnv *no_env) {
+  (void) api_table; (void) no_env;
 
   LOGI("CFL: Custom font loading is enabled, hiding traces.");
 
@@ -320,7 +320,7 @@ int do_custom_font_loading(struct api_table *api_table, JNIEnv *tw_env) {
     LOGI("CFL: Found font cfd: %d", fonts_fds[i]);
   }
 
-  jclass font_class = (*tw_env)->FindClass(tw_env, "android/graphics/Typeface");
+  jclass font_class = (*no_env)->FindClass(no_env, "android/graphics/Typeface");
   if (font_class == NULL) {
     LOGE("CFL: Failed to find Typeface class");
 
@@ -334,11 +334,11 @@ int do_custom_font_loading(struct api_table *api_table, JNIEnv *tw_env) {
     return 0;
   }
 
-  jmethodID native_warm_up_cache = (*tw_env)->GetStaticMethodID(tw_env, font_class, "nativeWarmUpCache", "(Ljava/lang/String;)V");
+  jmethodID native_warm_up_cache = (*no_env)->GetStaticMethodID(no_env, font_class, "nativeWarmUpCache", "(Ljava/lang/String;)V");
   if (native_warm_up_cache == NULL) {
     LOGE("CFL: Failed to find nativeWarmUpCache method");
 
-    (*tw_env)->ExceptionClear(tw_env);
+    (*no_env)->ExceptionClear(no_env);
 
     for (size_t j = 0; j < fonts_length; j++) {
       if (fonts_fds[j] == 0) continue;
@@ -356,12 +356,12 @@ int do_custom_font_loading(struct api_table *api_table, JNIEnv *tw_env) {
     char tmp_file_path[PATH_MAX];
     snprintf(tmp_file_path, sizeof(tmp_file_path), "/proc/self/fd/%d", fonts_fds[i]);
 
-    (*tw_env)->CallStaticVoidMethod(tw_env, font_class, native_warm_up_cache, (*tw_env)->NewStringUTF(tw_env, tmp_file_path));
+    (*no_env)->CallStaticVoidMethod(no_env, font_class, native_warm_up_cache, (*no_env)->NewStringUTF(no_env, tmp_file_path));
 
-    if ((*tw_env)->ExceptionCheck(tw_env)) {
+    if ((*no_env)->ExceptionCheck(no_env)) {
       LOGE("CFL: Exception occurred while calling nativeWarmUpCache");
 
-      (*tw_env)->ExceptionClear(tw_env);
+      (*no_env)->ExceptionClear(no_env);
 
       goto cleanup;
     }
@@ -392,8 +392,8 @@ int do_custom_font_loading(struct api_table *api_table, JNIEnv *tw_env) {
   return 1;
 }
 
-int do_denylist_logic_inversion(struct api_table *api_table, JNIEnv *tw_env, enum process_flags flags) {
-  (void) api_table; (void) tw_env;
+int do_denylist_logic_inversion(struct api_table *api_table, JNIEnv *no_env, enum process_flags flags) {
+  (void) api_table; (void) no_env;
 
   LOGI("DLI: Denylist logic inversion is enabled, inverting logic.");
 
@@ -466,8 +466,8 @@ struct map_range {
   uintptr_t end;
 };
 
-int do_atexit_hiding(struct api_table *api_table, JNIEnv *tw_env) {
-  (void) api_table; (void) tw_env;
+int do_atexit_hiding(struct api_table *api_table, JNIEnv *no_env) {
+  (void) api_table; (void) no_env;
 
   LOGI("AH: Atexit hiding is enabled, hiding traces.");
 
@@ -555,8 +555,8 @@ int do_atexit_hiding(struct api_table *api_table, JNIEnv *tw_env) {
 
 typedef void SoInfo;
 
-int do_frida_hiding(struct api_table *api_table, JNIEnv *tw_env) {
-  (void) api_table; (void) tw_env;
+int do_frida_hiding(struct api_table *api_table, JNIEnv *no_env) {
+  (void) api_table; (void) no_env;
 
   LOGI("FH: Frida hiding is enabled, hiding traces.");
 

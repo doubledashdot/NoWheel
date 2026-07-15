@@ -8,12 +8,12 @@
 #include "rz_daemon.h"
 
 #ifdef DEBUG
-  #define LOGD(...) do { __android_log_print(ANDROID_LOG_DEBUG, "TreatWheel", __VA_ARGS__); } while (0)
-  #define LOGI(...) do { __android_log_print(ANDROID_LOG_INFO, "TreatWheel", __VA_ARGS__); } while (0)
-  #define LOGW(...) do { __android_log_print(ANDROID_LOG_WARN, "TreatWheel", __VA_ARGS__); } while (0)
-  #define LOGE(...) do { __android_log_print(ANDROID_LOG_ERROR, "TreatWheel", __VA_ARGS__); } while (0)
-  #define LOGF(...) do { __android_log_print(ANDROID_LOG_FATAL, "TreatWheel", __VA_ARGS__); } while (0)
-  #define PLOGE(msg, ...) do { __android_log_print(ANDROID_LOG_ERROR, "TreatWheel", "%s: " msg ": %s", __func__, ##__VA_ARGS__, strerror(errno)); } while (0)
+  #define LOGD(...) do { __android_log_print(ANDROID_LOG_DEBUG, "NoWheel", __VA_ARGS__); } while (0)
+  #define LOGI(...) do { __android_log_print(ANDROID_LOG_INFO, "NoWheel", __VA_ARGS__); } while (0)
+  #define LOGW(...) do { __android_log_print(ANDROID_LOG_WARN, "NoWheel", __VA_ARGS__); } while (0)
+  #define LOGE(...) do { __android_log_print(ANDROID_LOG_ERROR, "NoWheel", __VA_ARGS__); } while (0)
+  #define LOGF(...) do { __android_log_print(ANDROID_LOG_FATAL, "NoWheel", __VA_ARGS__); } while (0)
+  #define PLOGE(msg, ...) do { __android_log_print(ANDROID_LOG_ERROR, "NoWheel", "%s: " msg ": %s", __func__, ##__VA_ARGS__, strerror(errno)); } while (0)
 #else
   #define LOGD(...)
   #define LOGI(...)
@@ -88,7 +88,7 @@ struct module_state {
   bool disable_frida_traces_hiding;
 };
 
-struct tw_mem_info {
+struct no_mem_info {
   uintptr_t start;
   size_t size;
 };
@@ -146,6 +146,6 @@ time_t mono_sec_now(void);
   bool update_mnt_ns(enum mount_namespace_state mns_state);
 #endif
 
-struct tw_mem_info tw_get_mem_info(void);
+struct no_mem_info no_get_mem_info(void);
 
 #endif /* UTILS_H */

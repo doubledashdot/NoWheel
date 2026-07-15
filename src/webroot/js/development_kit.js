@@ -1,22 +1,22 @@
 const developmentResponse = {
-  'cat /data/adb/treat_wheel/webui_config': {
+  'cat /data/adb/no_wheel/webui_config': {
     errno: 0,
     stdout: `disable_fullscreen=false`,
     stderr: ''
   },
-  'cat /data/adb/treat_wheel/state': {
+  'cat /data/adb/no_wheel/state': {
     errno: 0,
     stdout: 'disable_revanced_mounts_umount=true\ndisable_denylist_logic_inversion=true',
     stderr: ''
   },
-  'cat /data/adb/treat_wheel/status': {
+  'cat /data/adb/no_wheel/status': {
     errno: 0,
     stdout: 'hiding',
     stderr: ''
   },
-  'cat /data/adb/modules/treat_wheel/module.prop': {
+  'cat /data/adb/modules/no_wheel/module.prop': {
     errno: 0,
-    stdout: 'id=treat_wheel\nversion=1.2.3\nname=Treat Wheel\nversionCode=123\nauthor=ThePedroo\n',
+    stdout: 'id=no_wheel\nversion=1.2.3\nname=No Wheel\nversionCode=123\nauthor=ThePedroo\n',
     stderr: ''
   },
   '/data/adb/ksud debug version': {

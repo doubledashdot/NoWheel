@@ -186,7 +186,7 @@ static int send_prop_msg(const prop_msg *msg) {
     if (poll_result == 1 && (pollfds[0].revents & POLLHUP) != 0) {
       result = 0;
     } else {
-      // Ignore the timeout and treat it like a success anyway.
+      // Ignore the timeout and no it like a success anyway.
       // The init process is single-threaded and its property
       // service is sometimes slow to respond (perhaps it's off
       // starting a child process or something) and thus this

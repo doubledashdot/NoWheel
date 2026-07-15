@@ -29,14 +29,14 @@
 #include "zygisk.h"
 
 struct api_table *api_table;
-JNIEnv *tw_env;
+JNIEnv *no_env;
 
 /* INFO: Global variables, the same for all processes */
 void *rz_base = NULL;
 dev_t rz_dev;
 ino_t rz_ino;
 
-struct tw_mem_info tw_info;
+struct no_mem_info no_info;
 
 /* INFO: Process specific variables */
 uint32_t flags = 0;
@@ -63,7 +63,7 @@ int my_munmap(void *addr, size_t length) {
     }
 
     /* INFO: Utilizes dl_iterate_phdr, by CSOLoader, which resides in libzygisk.so */
-    if (!g_state.disable_module_loading_traces_hiding) do_atexit_hiding(api_table, tw_env);
+    if (!g_state.disable_module_loading_traces_hiding) do_atexit_hiding(api_table, no_env);
 
     finish_hiding_post:
       do_deinitialize();
@@ -88,7 +88,7 @@ int my_munmap(void *addr, size_t length) {
     /* INFO: Now safe to unmap libzygisk.so */
     munmap(addr, length);
 
-    [[clang::musttail]] return munmap((void *)tw_info.start, tw_info.size);
+    [[clang::musttail]] return munmap((void *)no_info.start, no_info.size);
   }
 
   return munmap(addr, length);
@@ -118,18 +118,18 @@ void preSpecialize(const char *process_name) {
   LOGI("Checking if module is set to be ignoring.");
 
   if (read_loop(cfd, &g_state, sizeof(g_state)) == -1) {
-    LOGI("Failed to read state, requested to dlclose Treat Wheel.");
+    LOGI("Failed to read state, requested to dlclose No Wheel.");
 
     g_state.is_ignoring = true;
 
     return;
   }
 
-  /* INFO: Ignore everyone and everything will make Treat Wheel completely disappear and behave like
+  /* INFO: Ignore everyone and everything will make No Wheel completely disappear and behave like
               it never existed.
   */
   if (g_state.is_ignoring) {
-    LOGI("Module is set to be ignoring, requested to dlclose Treat Wheel.");
+    LOGI("Module is set to be ignoring, requested to dlclose No Wheel.");
 
     return;
   }
@@ -150,20 +150,20 @@ void preSpecialize(const char *process_name) {
       ((flags & PROCESS_ON_DENYLIST) != PROCESS_ON_DENYLIST && !g_state.disable_denylist_logic_inversion)) {
     LOGI("Process is on denylist, cleaning extended traces.");
 
-    if (!g_state.disable_gsi_hiding && !do_gsi_hiding(api_table, tw_env)) return;
-    if (!g_state.disable_zygote_mountinfo_leak_fixing && !do_zygote_mountinfo_leak_hiding(api_table, tw_env)) return;
-    if (!g_state.disable_maps_hiding && !do_maps_hiding(api_table, tw_env)) return;
-    if (!g_state.disable_custom_font_loading && !do_custom_font_loading(api_table, tw_env)) return;
-    if (!g_state.disable_frida_traces_hiding && !do_frida_hiding(api_table, tw_env)) return;
+    if (!g_state.disable_gsi_hiding && !do_gsi_hiding(api_table, no_env)) return;
+    if (!g_state.disable_zygote_mountinfo_leak_fixing && !do_zygote_mountinfo_leak_hiding(api_table, no_env)) return;
+    if (!g_state.disable_maps_hiding && !do_maps_hiding(api_table, no_env)) return;
+    if (!g_state.disable_custom_font_loading && !do_custom_font_loading(api_table, no_env)) return;
+    if (!g_state.disable_frida_traces_hiding && !do_frida_hiding(api_table, no_env)) return;
   }
 
   if (!g_state.disable_denylist_logic_inversion) {
-    if (!do_denylist_logic_inversion(api_table, tw_env, flags)) return;
+    if (!do_denylist_logic_inversion(api_table, no_env, flags)) return;
   }
 
   if (((flags & PROCESS_ON_DENYLIST) == PROCESS_ON_DENYLIST && g_state.disable_denylist_logic_inversion) || 
       ((flags & PROCESS_ON_DENYLIST) != PROCESS_ON_DENYLIST && !g_state.disable_denylist_logic_inversion)) {
-    if (!g_state.disable_revanced_mounts_umount && !do_revanced_mounts_umount(api_table, tw_env, process_name)) return;
+    if (!g_state.disable_revanced_mounts_umount && !do_revanced_mounts_umount(api_table, no_env, process_name)) return;
   }
 }
 
@@ -177,11 +177,11 @@ void preAppSpecialize(void *mod_data, struct AppSpecializeArgs *args) {
   }
 
   /* INFO: Deferencing nice_name is necessary. In C++, & does that job */
-  const char *process = (*tw_env)->GetStringUTFChars(tw_env, *args->nice_name, NULL);
+  const char *process = (*no_env)->GetStringUTFChars(no_env, *args->nice_name, NULL);
   preSpecialize(process);
-  (*tw_env)->ReleaseStringUTFChars(tw_env, *args->nice_name, process);
+  (*no_env)->ReleaseStringUTFChars(no_env, *args->nice_name, process);
 
-  LOGD("Now setting custom unmap hook to hide Treat Wheel's library");
+  LOGD("Now setting custom unmap hook to hide No Wheel's library");
   api_table->pltHookRegister(rz_dev, rz_ino, "munmap", (void *)my_munmap, NULL);
   api_table->pltHookCommit();
 
@@ -220,7 +220,7 @@ void preServerSpecialize(void *mod_data, struct ServerSpecializeArgs *args) {
 
   close(cfd);
 
-  LOGD("Successfully initialized Treat Wheel daemon.");
+  LOGD("Successfully initialized No Wheel daemon.");
 }
 
 void postAppSpecialize(void *mod_data, const struct AppSpecializeArgs *args) {
@@ -233,7 +233,7 @@ void postServerSpecialize(void *mod_data, const struct ServerSpecializeArgs *arg
   api_table->setOption(api_table->impl, DLCLOSE_MODULE_LIBRARY);
 }
 
-__attribute__((constructor)) static void tw_initialization(void) {
+__attribute__((constructor)) static void no_initialization(void) {
   if (!str_starts_with(getprogname(), "zygote")) {
     LOGI("Process is not zygote, it's ReZygiskd.");
 
@@ -256,7 +256,7 @@ __attribute__((constructor)) static void tw_initialization(void) {
   }
 
   if (rz_dev == 0 || rz_ino == 0) {
-    LOGE("Failed to find ReZygisk's library in maps, requested to dlclose Treat Wheel.");
+    LOGE("Failed to find ReZygisk's library in maps, requested to dlclose No Wheel.");
 
     g_state.is_ignoring = true;
 
@@ -265,14 +265,14 @@ __attribute__((constructor)) static void tw_initialization(void) {
     return;
   }
 
-  tw_info = tw_get_mem_info();
+  no_info = no_get_mem_info();
 
-  LOGD("Treat Wheel memory region: start=%p, size=%zu", (void *)tw_info.start, tw_info.size);
+  LOGD("No Wheel memory region: start=%p, size=%zu", (void *)no_info.start, no_info.size);
 }
 
 void zygisk_module_entry(struct api_table *table, JNIEnv *env) {
   api_table = table;
-  tw_env = env;
+  no_env = env;
 
   static struct module_abi abi = {
     .api_version = 5,
@@ -292,16 +292,16 @@ static char **rvx_mounts = NULL;
 static size_t rvx_mounts_size = 0;
 static bool has_rvx_checked = false;
 
-static size_t tw_rvx_modules_size = 0;
+static size_t no_rvx_modules_size = 0;
 
 /* INFO: Checkpointing system */
-struct tw_process_state {
+struct no_process_state {
   bool performed_hiding;
   uint32_t pid;
   time_t opened_at;
 };
 
-static struct tw_process_state *process_states = NULL;
+static struct no_process_state *process_states = NULL;
 static size_t process_states_size = 0;
 static pthread_mutex_t process_states_lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -319,7 +319,7 @@ void zygisk_companion_entry(int module_fd) {
     }
 
     if (op == DAEMON_CHECK_IGNORING) {
-      FILE *fp = fopen("/data/adb/treat_wheel/state", "r");
+      FILE *fp = fopen("/data/adb/no_wheel/state", "r");
       if (!fp) {
         PLOGE("Open state file");
 
@@ -512,7 +512,7 @@ void zygisk_companion_entry(int module_fd) {
       }
 
       if (has_crashed) {
-        LOGW("Treat Wheel has crashed, refusing to set new state.");
+        LOGW("No Wheel has crashed, refusing to set new state.");
 
         continue;
       }
@@ -538,7 +538,7 @@ void zygisk_companion_entry(int module_fd) {
       pthread_mutex_unlock(&process_states_lock);
 
       if (has_crashed) {
-        LOGE("Treat Wheel has crashed, setting proper state.");
+        LOGE("No Wheel has crashed, setting proper state.");
 
         pthread_mutex_lock(&process_states_lock);
 
@@ -552,7 +552,7 @@ void zygisk_companion_entry(int module_fd) {
 
         pthread_mutex_unlock(&process_states_lock);
 
-        int ffd = open("/data/adb/treat_wheel/status", O_WRONLY | O_CREAT, 0644);
+        int ffd = open("/data/adb/no_wheel/status", O_WRONLY | O_CREAT, 0644);
         if (ffd == -1) {
           PLOGE("Open status file");
 
@@ -570,13 +570,13 @@ void zygisk_companion_entry(int module_fd) {
         pthread_mutex_lock(&process_states_lock);
 
         /* INFO: Process execution went well. Remove it. */
-        struct tw_process_state *found = NULL;
+        struct no_process_state *found = NULL;
         size_t i = 0;
 
         for (; i < process_states_size; i++) {
           if (process_states[i].pid != ppid) continue;
 
-          LOGD("Found process now finalized in Treat Wheel execution with pid %d, removing. Now, %zu process being tracked.", ppid, process_states_size - 1);
+          LOGD("Found process now finalized in No Wheel execution with pid %d, removing. Now, %zu process being tracked.", ppid, process_states_size - 1);
 
           found = &process_states[i];
 
@@ -597,7 +597,7 @@ void zygisk_companion_entry(int module_fd) {
               process_states = NULL;
             }
           } else {
-            struct tw_process_state *tmp_states = realloc(process_states, sizeof(struct tw_process_state) * process_states_size);
+            struct no_process_state *tmp_states = realloc(process_states, sizeof(struct no_process_state) * process_states_size);
             if (tmp_states) process_states = tmp_states;
           }
         }
@@ -605,7 +605,7 @@ void zygisk_companion_entry(int module_fd) {
         if (process_states_size == 0) {
           LOGD("No existing process states, resetting status to hiding.");
 
-          int ffd = open("/data/adb/treat_wheel/status", O_RDWR | O_CREAT, 0644);
+          int ffd = open("/data/adb/no_wheel/status", O_RDWR | O_CREAT, 0644);
           if (ffd == -1) {
             PLOGE("Open status file");
 
@@ -649,7 +649,7 @@ void zygisk_companion_entry(int module_fd) {
 
           process_states[i].performed_hiding = true;
 
-          LOGD("Updated state for process with pid %d in Treat Wheel execution.", ppid);
+          LOGD("Updated state for process with pid %d in No Wheel execution.", ppid);
 
           break;
         }
@@ -662,7 +662,7 @@ void zygisk_companion_entry(int module_fd) {
       if (status == MODULE_STATUS_INJECTED) {
         pthread_mutex_lock(&process_states_lock);
 
-        struct tw_process_state *tmp_states = realloc(process_states, sizeof(struct tw_process_state) * (process_states_size + 1));
+        struct no_process_state *tmp_states = realloc(process_states, sizeof(struct no_process_state) * (process_states_size + 1));
         if (!tmp_states) {
           PLOGE("Failed to allocate memory for process states");
 
@@ -674,7 +674,7 @@ void zygisk_companion_entry(int module_fd) {
         process_states[process_states_size].opened_at = mono_sec_now();
         process_states_size++;
 
-        LOGD("Started now Treat Wheel execution for process with pid %d. Now, %zu processes are being tracked.", ppid, process_states_size);
+        LOGD("Started now No Wheel execution for process with pid %d. Now, %zu processes are being tracked.", ppid, process_states_size);
 
         pthread_mutex_unlock(&process_states_lock);
       }
@@ -713,7 +713,7 @@ void zygisk_companion_entry(int module_fd) {
       if (!has_rvx_checked) {
         LOGD("Getting ReVanced mounts for the first time.");
 
-        if (!tw_rvx_modules_size) {
+        if (!no_rvx_modules_size) {
           DIR *dir = opendir("/data/adb/modules");
           if (!dir) {
             PLOGE("Open /data/adb/modules");
@@ -739,10 +739,10 @@ void zygisk_companion_entry(int module_fd) {
               continue;
             }
 
-            snprintf(path, sizeof(path), "/data/adb/modules/%s/tw_config", entry->d_name);
+            snprintf(path, sizeof(path), "/data/adb/modules/%s/no_config", entry->d_name);
 
             if (access(path, F_OK) != 0) {
-              LOGD("Module %s has no tw_config, skipping.", entry->d_name);
+              LOGD("Module %s has no no_config, skipping.", entry->d_name);
 
               continue;
             }
@@ -753,7 +753,7 @@ void zygisk_companion_entry(int module_fd) {
             */
             FILE *config_fp = fopen(path, "r");
             if (!config_fp) {
-              PLOGE("Open tw_config for module %s", entry->d_name);
+              PLOGE("Open no_config for module %s", entry->d_name);
 
               closedir(dir);
 
@@ -782,14 +782,14 @@ void zygisk_companion_entry(int module_fd) {
             fclose(config_fp);
 
             if (str_equal(module_type, "revanced") && allow_umount) {
-              tw_rvx_modules_size++;
+              no_rvx_modules_size++;
 
               LOGD("Module %s is a ReVanced module with umount allowed.", entry->d_name);
             }
           }
         }
 
-        if (tw_rvx_modules_size == 0) {
+        if (no_rvx_modules_size == 0) {
           LOGD("No ReVanced modules with umount allowed found, skipping mountinfo parsing.");
 
           uint8_t ret_state = 1;
@@ -860,7 +860,7 @@ void zygisk_companion_entry(int module_fd) {
 
         LOGD("Found %zu ReVanced mounts", rvx_mounts_size);
 
-        if (rvx_mounts_size == tw_rvx_modules_size) {
+        if (rvx_mounts_size == no_rvx_modules_size) {
           LOGI("All ReVanced mounts were now found. Skipping future searches.");
 
           has_rvx_checked = true;

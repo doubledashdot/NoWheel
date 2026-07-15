@@ -502,7 +502,7 @@ static bool split_load(contexts_split *s, const char *filename) {
     while (isspace(*p)) p++;
     if (*p == '#' || !*p) continue;
 
-    /* INFO: Parse two tokens */
+    /* INFO: Parse noo tokens */
     char *t1 = p;
     while (*p && !isspace(*p)) p++;
     if (!*p) continue;
