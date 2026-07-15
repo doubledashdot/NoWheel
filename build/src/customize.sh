@@ -19,7 +19,7 @@ if [ -d "/data/adb/modules/nohello" ] || [ -d "/data/adb/modules_update/nohello"
   abort "! NoHello is outdated and doesn't provide any benefits. Please uninstall it before installing No Wheel."
 fi
 
-NOZYGISK_REQUIRED_VERSION=508
+NOZYGISK_REQUIRED_VERSION=554
 
 # INFO: No Wheel won't work in any other Zygisk anyway. Demand NoZygisk.
 if [ -d "/data/adb/modules_update/nozygisk" ]; then
